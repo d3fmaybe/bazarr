@@ -275,9 +275,6 @@ class KtuvitProvider(Provider):
         if not is_movie:
             query["SearchType"] = "1"
 
-        if year:
-            query["Year"] = year
-
         # get the list of subtitles
         logger.debug("Getting the list of subtitles")
 
@@ -299,11 +296,13 @@ class KtuvitProvider(Provider):
             imdb_link = imdb_link[0:-1] if imdb_link.endswith("/") else imdb_link
             results_imdb_id = imdb_link.split("/")[-1]
 
-            if results_imdb_id != imdb_id:
+            if results_imdb_id != imdb_id and year != result["ReleaseDate"]:
                 logger.debug(
-                    "Subtitles is for IMDB %r but actual IMDB ID is %r",
+                    "Subtitles is for IMDB %r but actual IMDB ID is %r and subtitles is for year %r and not %r",
                     results_imdb_id,
                     imdb_id,
+                    result["ReleaseDate"],
+                    year
                 )
                 continue
 
@@ -350,7 +349,7 @@ class KtuvitProvider(Provider):
         )
         r = self.session.get(url, timeout=10)
         r.raise_for_status()
-        
+
         if len(r.content) < 10:
             logger.debug("Too short content-length in response: [{}]. Treating as No Subtitles Found ".format(str(r.content)))
             return []
@@ -373,7 +372,7 @@ class KtuvitProvider(Provider):
                     sub["sub_id"] = column.find("input", attrs={"data-sub-id": True})[
                         "data-sub-id"
                     ]
-            
+
             if 'sub_id' in sub:
                 subs.append(sub)
         return subs
