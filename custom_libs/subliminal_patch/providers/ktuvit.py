@@ -298,7 +298,7 @@ class KtuvitProvider(Provider):
 
             if results_imdb_id != imdb_id and year != result["ReleaseDate"]:
                 logger.debug(
-                    "Subtitles is for IMDB %r but actual IMDB ID is %r and subtitles is for year is %r and not %r",
+                    "Subtitles is for IMDB %r but actual IMDB ID is %r and subtitles is for year %r and not %r",
                     results_imdb_id,
                     imdb_id,
                     result["ReleaseDate"],
