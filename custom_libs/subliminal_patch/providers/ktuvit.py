@@ -275,9 +275,6 @@ class KtuvitProvider(Provider):
         if not is_movie:
             query["SearchType"] = "1"
 
-        # if year:
-        #     query["Year"] = year
-
         # get the list of subtitles
         logger.debug("Getting the list of subtitles")
 
